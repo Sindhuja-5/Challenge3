@@ -7,8 +7,15 @@ import plotly.express as px
 csv_file_path = 'bookstore.csv'
 df = pd.read_csv(csv_file_path)
 
-st.title('Bookstore Dashboard')
+# Link to custom CSS file
+st.markdown(
+    """
+    <link rel='stylesheet' href='custom.css' />
+    """,
+    unsafe_allow_html=True
+)
 
+st.title('Bookstore Dashboard')
 st.sidebar.header("Filters:")
 rating = st.sidebar.multiselect(
     "RATING",
