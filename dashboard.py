@@ -1,20 +1,39 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import snowflake.connector
+import pandas as pd
+from snowflake.connector.pandas_tools import write_pandas
+
+def fetch_data_from_snowflake():
+    try:
+        # Create a connection object
+        conn = snowflake.connector.connect(
+            user= "Sindhuja05",
+            password="@Sindhuja5143",
+            account="ncfbnjb-cl78102",
+                )
+        print("Connection to Snowflake account established successfully.")
+
+        # Create a cursor object to execute SQL queries
+        cur = conn.cursor()
+        cur.execute(f'USE DATABASE BOOKSTORE')
+        select_query = 'SELECT * FROM BOOKS_CATALOG'
+        cur.execute(select_query)
+        rows = cur.fetchall()
+        columns = [desc[0] for desc in cur.description]
+        df = pd.DataFrame(rows, columns=columns)
+        return df
+        # Close the cursor and connection
+    except Exception as e:
+        st.error(f"Error fetching data: {e}")
+    finally:
+        conn.close()
+    print("Connection to Snowflake account closed successfully.")
+df = fetch_data_from_snowflake()
 
 
-# Load the CSV file into a Pandas DataFrame
-csv_file_path = 'bookstore.csv'
-df = pd.read_csv(csv_file_path)
-
-# Link to custom CSS file
-st.markdown(
-    """
-    <link rel='stylesheet' href='custom.css' />
-    """,
-    unsafe_allow_html=True
-)
-
+# Streamlit dashboard
 st.title('Bookstore Dashboard')
 st.sidebar.header("Filters:")
 rating = st.sidebar.multiselect(
