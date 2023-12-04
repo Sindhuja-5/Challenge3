@@ -67,11 +67,11 @@ with left:
 
 with middle:
     st.info("Avg. price of book")
-    st.metric(label = "", value=f"${round(average_price, 2)}")
+    st.metric(label = "", value=f"€{round(average_price, 2)}")
 
 with right:
     st.info("Cost of inventory")
-    st.metric(label = "", value=f"${round(total_cost,2)}")
+    st.metric(label = "", value=f"€{round(total_cost,2)}")
 
 with m2:
     st.info("Avg. rating")
